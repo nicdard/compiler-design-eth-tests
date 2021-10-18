@@ -87,6 +87,21 @@ let cc_shr = fun (n:int) (v:Int64.t) -> Gradedtests.test_machine
   ;InsB0 (Shrq, [~$n; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ]
 
+let cc_incr = fun (src:Int64.t) -> Gradedtests.test_machine
+  [InsB0 (Movq, [Imm (Lit src); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Incq, [~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
+let cc_decr = fun (src:Int64.t) -> Gradedtests.test_machine
+  [InsB0 (Movq, [Imm (Lit src); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Decq, [~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
+let cc_sub = fun (dest:Int64.t) (src:Int64.t) -> Gradedtests.test_machine
+  [InsB0 (Movq, [Imm (Lit dest); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Subq, [Imm (Lit src); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
 let condition_flag_set_tests = 
   [ (* Logic instruction. *)
     ("cc_and", Gradedtests.cs_test 2 (cc_and ()) (false, false, false))
@@ -132,7 +147,22 @@ let condition_flag_set_tests =
   ; ("cc_shr_1_neg", Gradedtests.cso_test 2 (cc_shr 1 Int64.min_int) true)
   ; ("cc_shr_max", Gradedtests.cc_test "OF:true SF:false ZF:true" 2 (cc_shr 3 Int64.max_int) (true, true, true)
       (fun m -> m.flags.fo && not m.flags.fs && m.flags.fz))
+
+    (* Arithmetic instructions. *)
+  ; ("cc_sub_1", Gradedtests.cs_test 2 (cc_sub 0xFFFFFFFFFFFFFFFFL (-1L)) (false, false, true))
+  ; ("cc_sub_2", Gradedtests.cs_test 2 (cc_sub 0xFFFFFFFFFFFFFFFFL 1L) (false, true, false))
+  ; ("cc_sub_3", Gradedtests.cs_test 2 (cc_sub Int64.min_int 42L) (true, false, false))
+  ; ("cc_sub_4", Gradedtests.cs_test 2 (cc_sub (-1233291893L) Int64.max_int) (true, false, false))
+
+  ; ("cc_incr", Gradedtests.cs_test 2 (cc_incr Int64.max_int) (true, true, false))
+  ; ("cc_incr", Gradedtests.cs_test 2 (cc_incr (-1L)) (false, false, true))
+  ; ("cc_decr", Gradedtests.cs_test 2 (cc_decr Int64.min_int) (true, false, false))
+  ; ("cc_decr", Gradedtests.cs_test 2 (cc_decr 1L) (false, false, true))
   ]
+
+]
+
+
 
 let provided_tests : suite = [
   Test ("Debug: End-to-end Tests", [
@@ -140,5 +170,5 @@ let provided_tests : suite = [
     ; ("negq", Gradedtests.program_test (main_driver::negq) (Int64.neg 99L) )
     ; ("addq", Gradedtests.program_test (main_driver::addq) 3L )
   ]);
-  Test ("Debug: Condition Flags Set Tests", condition_flag_set_tests)
+  Test ("Debug: Condition Flags Set Tests", condition_flag_set_tests);
 ]
