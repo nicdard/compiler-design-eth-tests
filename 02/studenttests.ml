@@ -130,8 +130,8 @@ let condition_flag_set_tests =
   ; ("cc_shr_0_b", Gradedtests.csi_test 2 (cc_shr 0 Int64.max_int))
   ; ("cc_shr_1", Gradedtests.cso_test 2 (cc_shr 1 0x0F0F0F0FL) false)
   ; ("cc_shr_1_neg", Gradedtests.cso_test 2 (cc_shr 1 Int64.min_int) true)
-  ; ("cc_shr_max", Gradedtests.cc_test "OF:true SF:false ZF:false" 2 (cc_shr 3 Int64.max_int) (true, true, true)
-      (fun m -> m.flags.fo && not m.flags.fs && not m.flags.fz))
+  ; ("cc_shr_max", Gradedtests.cc_test "OF:true SF:false ZF:true" 2 (cc_shr 3 Int64.max_int) (true, true, true)
+      (fun m -> m.flags.fo && not m.flags.fs && m.flags.fz))
   ]
 
 let provided_tests : suite = [
