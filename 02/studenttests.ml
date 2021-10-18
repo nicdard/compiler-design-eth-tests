@@ -107,7 +107,7 @@ let condition_flag_set_tests =
     ("cc_and", Gradedtests.cs_test 2 (cc_and ()) (false, false, false))
   ; ("cc_or",  Gradedtests.cs_test 2 (cc_or  ()) (false, false, false))
   ; ("cc_xor", Gradedtests.cs_test 2 (cc_xor ()) (false, false, false))
-  ; ("cs_not", Gradedtests.csi_test 2 (cc_not ()))
+  ; ("cc_not", Gradedtests.csi_test 2 (cc_not ()))
 
     (* Bit-manipulation instructions. *)
   ; ("cc_sar_0_a", Gradedtests.cc_test "OF:false SF:false ZF:false" 2 (cc_sar 0 0x0F0F0F0FL) (false, false, false)
@@ -173,19 +173,19 @@ let jmp = fun (src:operand) -> Gradedtests.test_machine
   ]
 
 let jmp_ind_1 = fun () -> Gradedtests.test_machine
-  [InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); Imm (Lit (Int64.add mem_bot 24L))]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  [InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); Ind1 (Lit (Int64.add mem_bot 24L))]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ;InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ;InsB0 (Jmp, [Ind1 (Lit (Int64.add mem_bot 24L))]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ]
 
 let jmp_ind_2 = fun () -> Gradedtests.test_machine
-  [InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); Imm (Lit (Int64.add mem_bot 24L))]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  [InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); Ind1 (Lit (Int64.add mem_bot 24L))]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ;InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ;InsB0 (Jmp, [Ind2 Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ]
 
 let jmp_ind_3 = fun () -> Gradedtests.test_machine
-  [InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); Imm (Lit (Int64.add mem_bot 32L))]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  [InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); Ind1 (Lit (Int64.add mem_bot 32L))]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ;InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ;InsB0 (Jmp, [Ind3 (Lit 8L, Rax)]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ]
