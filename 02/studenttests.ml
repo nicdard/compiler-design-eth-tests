@@ -161,6 +161,59 @@ let condition_flag_set_tests =
   ]
 
 
+let leaq = fun () -> Gradedtests.test_machine
+  [InsB0 (Leaq, [Ind1 (Lit (mem_bot)); ~%R12]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag 
+  ;InsB0 (Movq, [Imm (Lit (Int64.add mem_bot @@ Int64.mul ins_size 4L)); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Leaq, [Ind2 Rax; ~%Rbx]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Leaq, [Ind3 (Lit ins_size, Rbx); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
+let jmp = fun (src:operand) -> Gradedtests.test_machine
+  [InsB0 (Jmp, [src]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
+let jmp_ind_1 = fun () -> Gradedtests.test_machine
+  [InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); Imm (Lit (Int64.add mem_bot 24L))]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Jmp, [Ind1 (Lit (Int64.add mem_bot 24L))]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
+let jmp_ind_2 = fun () -> Gradedtests.test_machine
+  [InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); Imm (Lit (Int64.add mem_bot 24L))]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Jmp, [Ind2 Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
+let jmp_ind_3 = fun () -> Gradedtests.test_machine
+  [InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); Imm (Lit (Int64.add mem_bot 32L))]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Movq, [Imm (Lit (Int64.add mem_bot 24L)); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Jmp, [Ind3 (Lit 8L, Rax)]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
+let instruction_tests = [
+  ("leaq", Gradedtests.machine_test "r12=4194304L rbx=4194336L rax=4194344L" 4 (leaq ())
+    (fun m -> print_endline @@ Int64.to_string m.regs.(rind Rax); m.regs.(rind R12) = mem_bot
+           && m.regs.(rind Rbx) = (Int64.add mem_bot @@ Int64.mul ins_size 4L)
+           && m.regs.(rind Rax) = (Int64.add mem_bot @@ Int64.mul ins_size 5L)
+    )
+  );
+  ("jmp_lit", Gradedtests.machine_test "rip=0x400000L" 1 (jmp @@ Imm (Lit(mem_bot)))
+    (fun m -> m.regs.(rind Rip) = mem_bot)
+  );
+  ("jmp_reg", Gradedtests.machine_test "rip=4259832L" 1 (jmp ~%Rsp)
+    (fun m -> m.regs.(rind Rsp) = Int64.sub mem_top 8L
+           && m.regs.(rind Rip) = Int64.sub mem_top 8L)
+  );
+  ("jmp_ind1", Gradedtests.machine_test "rip=4194328L" 3 (jmp_ind_1 ())
+    (fun m -> m.regs.(rind Rip) = Int64.add mem_bot 24L)
+  );
+  ("jmp_ind2", Gradedtests.machine_test "rip=4194328L" 3 (jmp_ind_2 ())
+    (fun m -> m.regs.(rind Rip) = Int64.add mem_bot 24L)
+  );
+  ("jmp_ind3", Gradedtests.machine_test "rip=4194328L" 3 (jmp_ind_3 ())
+    (fun m -> m.regs.(rind Rip) = Int64.add mem_bot 24L)
+  );
+]
 
 let provided_tests : suite = [
   Test ("Debug: End-to-end Tests", [
@@ -169,4 +222,5 @@ let provided_tests : suite = [
     ; ("addq", Gradedtests.program_test (main_driver::addq) 3L )
   ]);
   Test ("Debug: Condition Flags Set Tests", condition_flag_set_tests);
+  Test ("Debug: Instruction Tests", instruction_tests)
 ]
