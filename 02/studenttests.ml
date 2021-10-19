@@ -147,6 +147,9 @@ let condition_flag_set_tests =
   ; ("cc_shr_1_neg", Gradedtests.cso_test 2 (cc_shr 1 Int64.min_int) true)
   ; ("cc_shr_max", Gradedtests.cc_test "OF:true SF:false ZF:true" 2 (cc_shr 3 Int64.max_int) (true, true, true)
       (fun m -> m.flags.fo && not m.flags.fs && m.flags.fz))
+  ; ("cc_shr_max", Gradedtests.cc_test "OF:true SF:false ZF:true" 2 (cc_shr 63 Int64.max_int) (true, true, false)
+      (fun m -> m.flags.fo && not m.flags.fs && m.flags.fz))
+  
 
     (* Arithmetic instructions. *)
   ; ("cc_sub_1", Gradedtests.cs_test 2 (cc_sub 0xFFFFFFFFFFFFFFFFL (-1L)) (false, false, true))
