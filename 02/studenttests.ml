@@ -52,6 +52,28 @@ let addq = [
                  ]
 ]
 
+let fibonacci = [
+  text "fibonacci" @@ function_prologue @ 
+                   [ Movq, [ ~$1; ~%Rax ] (* Prepare the return value for base case. *)
+                   ; Cmpq, [ ~$2; ~%Rdi ]
+                   ; J Le, [ ~$$".exit" ]
+                   ; Subq, [ ~$16; ~%Rsp ] (* Reserve stack space for recursive call argument and intermidiate result. *)
+                   ; Subq, [ ~$2; ~%Rdi ]
+                   ; Movq, [ ~%Rdi; Ind3 (Lit (-8L), Rbp) ] (* Save intermediate argument. *)
+                   ; Addq, [ ~$1; ~%Rdi ] (* Prepare first recursive call argument. *)
+                   ; Callq, [ ~$$"fibonacci" ] (* Recursively call with n - 1. *)
+                   ; Movq, [ ~%Rax; Ind3 (Lit (-16L), Rbp) ] (* Store intermidiate result in stack. *)
+                   ; Movq, [ Ind3 (Lit (-8L), Rbp); ~%Rdi ] (* Prepare second recursive call argument. *)
+                   ; Callq, [ ~$$"fibonacci" ] (* Recursively call with n - 2. *)
+                   ; Addq, [ Ind3 (Lit (-16L), Rbp); ~%Rax ] (* Prepare result. *)
+                   ; Addq, [ ~$16; ~%Rsp ] (* Shrink the stack. *)
+                   ]
+  ; text ".exit" function_epilogue
+  ; default_fun_builder [ Movq, [ ~$30; ~%Rdi ]
+                        ; Callq, [ ~$$"fibonacci" ]
+                        ]
+]
+
 let cc_not = fun () -> Gradedtests.test_machine
   [InsB0 (Movq, [~$1; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ;InsB0 (Notq, [~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
@@ -149,7 +171,6 @@ let condition_flag_set_tests =
       (fun m -> m.flags.fo && not m.flags.fs && m.flags.fz))
   ; ("cc_shr_max", Gradedtests.cc_test "OF:true SF:false ZF:true" 2 (cc_shr 63 Int64.max_int) (true, true, false)
       (fun m -> m.flags.fo && not m.flags.fs && m.flags.fz))
-  
 
     (* Arithmetic instructions. *)
   ; ("cc_sub_1", Gradedtests.cs_test 2 (cc_sub 0xFFFFFFFFFFFFFFFFL (-1L)) (false, false, true))
@@ -193,9 +214,65 @@ let jmp_ind_3 = fun () -> Gradedtests.test_machine
   ;InsB0 (Jmp, [Ind3 (Lit 8L, Rax)]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ]
 
+let callq = fun (src:quad) -> Gradedtests.test_machine
+  [InsB0 (Movq,  [Imm (Lit src); Ind1 (Lit src)]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Callq, [Ind1 (Lit src)]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
+let ret = fun () -> Gradedtests.test_machine
+  [InsB0 (Movq,  [Imm (Lit 4194328L); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Callq, [~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Retq, []);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Retq, []);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
+let j = fun (cnd:cnd) (n:int) (src:quad) -> Gradedtests.test_machine
+  [InsB0 (Addq, [~$n; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (J cnd, [Imm (Lit src)]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
+let bin_log = fun (op:opcode) -> Gradedtests.test_machine
+  [InsB0 (Movq, [~$2; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Movq, [~$3; ~%Rbx]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Movq, [~$255; ~%Rcx]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Movq, [~$1; Gradedtests.stack_offset 0L]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (op, [~%Rax; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (op, [~$2; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (op, [~%Rax; ~%Rbx]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (op, [Gradedtests.stack_offset 0L; ~%Rcx]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
+let notq = fun () -> Gradedtests.test_machine
+  [InsB0 (Movq, [~$2; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Movq, [Imm (Lit (Int64.min_int)); Gradedtests.stack_offset 0L]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Notq, [~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Notq, [Gradedtests.stack_offset 0L]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
+let shr = fun (op:opcode) -> Gradedtests.test_machine
+  [InsB0 (Movq, [~$256; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Movq, [Imm (Lit (Int64.min_int)); Gradedtests.stack_offset 0L]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Movq, [~$63; ~%Rcx]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (op, [~$2; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (op, [~%Rcx; Gradedtests.stack_offset 0L]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
+let setb = fun (cnd:cnd) -> Gradedtests.test_machine
+  [InsB0 (Addq, [~$256; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Set cnd, [~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Addq, [Imm (Lit (Int64.max_int)); Gradedtests.stack_offset 0L]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Set cnd, [Gradedtests.stack_offset 0L]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
+let bin_aop = fun (op:opcode) -> Gradedtests.test_machine
+  [InsB0 (Movq, [~$2; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Movq, [~$22; ~%Rbx]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (op, [~%Rbx; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
 let instruction_tests = [
   ("leaq", Gradedtests.machine_test "r12=4194304L rbx=4194336L rax=4194344L" 4 (leaq ())
-    (fun m -> print_endline @@ Int64.to_string m.regs.(rind Rax); m.regs.(rind R12) = mem_bot
+    (fun m -> m.regs.(rind R12) = mem_bot
            && m.regs.(rind Rbx) = (Int64.add mem_bot @@ Int64.mul ins_size 4L)
            && m.regs.(rind Rax) = (Int64.add mem_bot @@ Int64.mul ins_size 5L)
     )
@@ -216,6 +293,65 @@ let instruction_tests = [
   ("jmp_ind3", Gradedtests.machine_test "rip=4194328L" 3 (jmp_ind_3 ())
     (fun m -> m.regs.(rind Rip) = Int64.add mem_bot 24L)
   );
+  ("call", Gradedtests.machine_test "rip=4194328L rsp=4259824L" 2 (callq 4194328L)
+    (fun m -> m.regs.(rind Rip) = 4194328L
+           && m.regs.(rind Rsp) = Int64.sub mem_top 16L
+           (* Stack contains next instruction to be called in the caller. *)
+           && int64_of_sbytes (Gradedtests.sbyte_list m.mem (mem_size - 16)) = Int64.add mem_bot 16L));
+  ("ret_1", Gradedtests.machine_test "rip=4194320L" 3 (ret ()) 
+    (fun m -> m.regs.(rind Rip) = 4194320L));
+  ("ret_2", Gradedtests.machine_test "rip=0L" 4 (ret ())
+    (* machine_test doesn't set the sentinel address. *)
+    (fun m -> m.regs.(rind Rip) = 0L));
+  ("j_1", Gradedtests.machine_test "rip=4259832L" 2 (j Eq 0 4259832L)
+    (fun m -> m.flags.fz && m.regs.(rind Rip) = 4259832L));
+  ("j_2", Gradedtests.machine_test "rip=4194320L" 2 (j Neq 0 4259832L)
+    (fun m -> m.flags.fz && m.regs.(rind Rip) = 4194320L));
+  ("j_3", Gradedtests.machine_test "rip=4194320L" 2 (j Lt 12 4259832L)
+    (fun m -> not m.flags.fz && not m.flags.fs && m.regs.(rind Rip) = 4194320L));
+  ("orq", Gradedtests.machine_test "rax=2 rbx=3 rcx=255 *65528=1" 8 (bin_log Orq)
+    (fun m -> m.regs.(rind Rax) = 2L
+           && m.regs.(rind Rbx) = 3L
+           && m.regs.(rind Rcx) = 255L
+           && int64_of_sbytes (Gradedtests.sbyte_list m.mem (mem_size-8)) = 1L
+    )
+  );
+  ("xorq", Gradedtests.machine_test "rax=2 rbx=1 rcx=254 *65528=1" 8 (bin_log Xorq)
+    (fun m -> m.regs.(rind Rax) = 2L
+           && m.regs.(rind Rbx) = 1L
+           && m.regs.(rind Rcx) = 254L
+           && int64_of_sbytes (Gradedtests.sbyte_list m.mem (mem_size-8)) = 1L
+    )
+  );
+  ("notq", Gradedtests.machine_test "rax=-3L *65528=Int64.max_int" 4 (notq ())
+    (fun m -> m.regs.(rind Rax) = -3L
+           && int64_of_sbytes (Gradedtests.sbyte_list m.mem (mem_size-8)) = Int64.max_int
+    )
+  );
+  ("shrq", Gradedtests.machine_test "rax=64L *65528=1L" 5 (shr (Shrq))
+    (fun m -> m.regs.(rind Rax) = 64L
+      && int64_of_sbytes (Gradedtests.sbyte_list m.mem (mem_size-8)) = 1L
+    )
+  );
+  ("sraq", Gradedtests.machine_test "rax=64L *65528=-1L" 5 (shr (Sarq))
+    (fun m -> m.regs.(rind Rax) = 64L
+      && int64_of_sbytes (Gradedtests.sbyte_list m.mem (mem_size-8)) = -1L
+    )
+  );
+  ("setb", Gradedtests.machine_test "rax=256L *65528=0x7FFFFFFFFFFFFF00L" 4 (setb (Lt))
+    (fun m -> m.regs.(rind Rax) = 256L
+      && int64_of_sbytes (Gradedtests.sbyte_list m.mem (mem_size-8)) = Int64.sub Int64.max_int 255L
+    )
+  );
+  ("setb", Gradedtests.machine_test "rax=257L *65528=0x7FFFFFFFFFFFFF01L" 4 (setb (Gt))
+    (fun m -> m.regs.(rind Rax) = 257L
+      && int64_of_sbytes (Gradedtests.sbyte_list m.mem (mem_size-8)) = Int64.sub Int64.max_int 254L
+    )
+  );
+  ("addq", Gradedtests.machine_test "rax=24L" 3 (bin_aop Addq)
+    (fun m -> m.regs.(rind Rax) = 24L));
+  ("subq", Gradedtests.machine_test "rax=24L" 3 (bin_aop Subq)
+    (fun m -> m.regs.(rind Rax) = -20L));
 ]
 
 let provided_tests : suite = [
@@ -223,6 +359,7 @@ let provided_tests : suite = [
     ("empty main", Gradedtests.program_test [empty_main] 0L)
     ; ("negq", Gradedtests.program_test (main_driver::negq) (Int64.neg 99L) )
     ; ("addq", Gradedtests.program_test (main_driver::addq) 3L )
+    ; ("fibonacci", Gradedtests.program_test (main_driver::fibonacci) 832040L)
   ]);
   Test ("Debug: Condition Flags Set Tests", condition_flag_set_tests);
   Test ("Debug: Instruction Tests", instruction_tests)
