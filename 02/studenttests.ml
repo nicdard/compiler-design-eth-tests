@@ -6,6 +6,84 @@ open Asm
 (* You can use this file for additional test cases to help your *)
 (* implementation.                                              *)
 
+(* some useful constructs *)
+let redefinedsym_test (p:prog) () =
+  try ignore (assemble p);
+    failwith "Should have raised Redefined_sym"
+  with 
+    | Redefined_sym _ -> ()
+    | _ -> failwith "Should have raised Redefined_sym"
+
+let prog_nothing = [ text "main"
+    [ Retq, [] ]
+]
+
+let prog_int (n: int) = [ text "main"
+    [ Movq, [~$n; ~%Rax] (* move immidiate to reg*)
+    ; Retq, []
+    ]
+  ]
+
+let prog_callq_ret (n: int) = 
+  [ text "main"
+    [ Movq, [~$12; ~%Rax] (* move immidiate to reg*)
+    ; Callq, [~$$"setblock" ]
+    ; Retq, []
+  ]
+; text "setblock"
+    [ Movq, [~$n; ~%Rax]
+    ; Retq, []
+    ]
+]
+
+let prog_double_symb = [ text "foo"
+                  [ Xorq, [~%Rax; ~%Rax]
+                  ; Movq, [~$100; ~%Rax]
+                  ; Retq, []
+                  ]
+            ; text "main" 
+                  [ Xorq, [~%Rax; ~%Rax]
+                  ; Movq, [Ind1 (Lbl "foo"); ~%Rax]
+                  ; Retq, []
+                  ]
+            ;  data "foo" 
+                  [ Quad (Lit 99L)
+                  ; Asciz "Hello, world!"
+                  ]
+            ]
+
+
+let prog_placement = 
+  [ data "foo"
+        [ Quad (Lit 42L)
+        ; Quad (Lit 40L)
+        ]
+  ; text "main" 
+        [ Leaq, [Ind1 (Lbl "foo"); ~%Rax]
+        ; Retq, []
+        ]
+  ]
+
+let prog_placement_ind_lit = 
+  [ text "main" 
+        [ Leaq, [Ind1 (Lit 0x400001L); ~%Rax]
+        ; Retq, []
+        ]
+  ]
+
+let prog_leaq_ind2 = 
+  [ data "foo"
+        [ Quad (Lit 42L)
+        ; Quad (Lit 40L)
+        ]
+  ; text "main" 
+        [ Movq, [(Imm (Lbl "foo")); ~%Rax]
+        ; Leaq, [Ind2 Rax; ~%Rax]
+        ; Retq, [] (* TODO: should return mem_bot + 24 *)
+        ]
+  ]
+
+  
 (* Function prologue and epilogue. *)
 let function_prologue : ins list =
   Asm.([ 
@@ -369,5 +447,18 @@ let provided_tests : suite = [
     ; ("fibonacci", Gradedtests.program_test (main_driver::fibonacci) 832040L)
   ]);
   Test ("Debug: Condition Flags Set Tests", condition_flag_set_tests);
-  Test ("Debug: Instruction Tests", instruction_tests)
+  Test ("Debug: Instruction Tests", instruction_tests);
+  Test ("Tests by dbernhard", [
+    ("prog_exit", Gradedtests.program_test prog_nothing 0L);  
+    ("prog_movq_ret3", Gradedtests.program_test (prog_int 3) 3L);
+    ("prog_callq_ret900", Gradedtests.program_test (prog_callq_ret 900) 900L);
+
+    ("prog_double_symb", redefinedsym_test prog_double_symb);
+
+    ("prog_placement", Gradedtests.program_test prog_placement 0x400010L);
+    ("prog_placement_ind_lit", Gradedtests.program_test prog_placement_ind_lit 0x400001L);
+
+    ("prog_leaq_ind2", Gradedtests.program_test prog_leaq_ind2 0x400018L);
+
+  ])
 ]
