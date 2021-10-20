@@ -79,6 +79,12 @@ let cc_not = fun () -> Gradedtests.test_machine
   ;InsB0 (Notq, [~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ]
 
+let cc_not_negative = fun () -> Gradedtests.test_machine
+  [InsB0 (Xorq, [~$1; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag (* sets all flags to false *)
+  ;InsB0 (Movq, [~$1; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ;InsB0 (Notq, [~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+  ]
+
 let cc_and = fun () -> Gradedtests.test_machine
   [InsB0 (Movq, [Imm (Lit 0x0F0F0F0FL); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ;InsB0 (Andq, [Imm (Lit 0xF0F0F0FFL); ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
@@ -130,6 +136,7 @@ let condition_flag_set_tests =
   ; ("cc_or",  Gradedtests.cs_test 2 (cc_or  ()) (false, false, false))
   ; ("cc_xor", Gradedtests.cs_test 2 (cc_xor ()) (false, false, false))
   ; ("cc_not", Gradedtests.csi_test 2 (cc_not ()))
+  ; ("cc_not_negative", Gradedtests.cs_test 3 (cc_not_negative ()) (false, false, false))
 
     (* Bit-manipulation instructions. *)
   ; ("cc_sar_0_a", Gradedtests.cc_test "OF:false SF:false ZF:false" 2 (cc_sar 0 0x0F0F0F0FL) (false, false, false)
