@@ -77,12 +77,35 @@ let prog_leaq_ind2 =
         ; Quad (Lit 40L)
         ]
   ; text "main" 
-        [ Movq, [(Imm (Lbl "foo")); ~%Rax]
+        [ Movq, [~$$"foo"; ~%Rax]
         ; Leaq, [Ind2 Rax; ~%Rax]
         ; Retq, [] (* should return mem_bot + 24 (or + 0x16) *)
         ]
   ]
 
+let prog_mov_ind3 = 
+  [ data "foo"
+        [ Quad (Lit 420L)
+        ; Quad (Lit 39L)
+        ]
+  ; text "main" 
+        [ Movq, [(Imm (Lbl "foo")); ~%Rax]
+        ; Movq, [(Ind3 (Lit 8L, Rax)); ~%Rax]
+        ; Retq, []
+        ]
+  ]
+
+let prog_dec_reg = 
+  [ data "foo"
+        [ Quad (Lit 42L)
+        ; Quad (Lit 40L)
+        ]
+  ; text "main" 
+        [ Movq, [~$12; ~%Rax] (* move immidiate to reg*)
+        ; Decq, [~%Rax]
+        ; Retq, []
+        ]
+  ]
   
 (* Function prologue and epilogue. *)
 let function_prologue : ins list =
@@ -456,6 +479,8 @@ let provided_tests : suite = [
     ; ("prog_placement", Gradedtests.program_test prog_placement 0x400010L)
     ; ("prog_placement_ind_lit", Gradedtests.program_test prog_placement_ind_lit 0x400001L)
     ; ("prog_leaq_ind2", Gradedtests.program_test prog_leaq_ind2 0x400018L)
+    ; ("prog_mov_ind3", Gradedtests.program_test prog_mov_ind3 39L)
+    ; ("prog_dec_reg", Gradedtests.program_test prog_dec_reg 11L)
 
   ])
 ]
