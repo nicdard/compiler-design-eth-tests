@@ -77,7 +77,7 @@ let prog_leaq_ind2 =
         ; Quad (Lit 40L)
         ]
   ; text "main" 
-        [ Movq, [(Imm (Lbl "foo")); ~%Rax]
+        [ Movq, [~$$"foo"; ~%Rax]
         ; Leaq, [Ind2 Rax; ~%Rax]
         ; Retq, [] (* should return mem_bot + 24 (or + 0x16) *)
         ]
