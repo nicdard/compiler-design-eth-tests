@@ -79,7 +79,7 @@ let prog_leaq_ind2 =
   ; text "main" 
         [ Movq, [(Imm (Lbl "foo")); ~%Rax]
         ; Leaq, [Ind2 Rax; ~%Rax]
-        ; Retq, [] (* TODO: should return mem_bot + 24 *)
+        ; Retq, [] (* should return mem_bot + 24 (or + 0x16) *)
         ]
   ]
 
@@ -448,17 +448,14 @@ let provided_tests : suite = [
   ]);
   Test ("Debug: Condition Flags Set Tests", condition_flag_set_tests);
   Test ("Debug: Instruction Tests", instruction_tests);
-  Test ("Tests by dbernhard", [
-    ("prog_exit", Gradedtests.program_test prog_nothing 0L);  
-    ("prog_movq_ret3", Gradedtests.program_test (prog_int 3) 3L);
-    ("prog_callq_ret900", Gradedtests.program_test (prog_callq_ret 900) 900L);
-
-    ("prog_double_symb", redefinedsym_test prog_double_symb);
-
-    ("prog_placement", Gradedtests.program_test prog_placement 0x400010L);
-    ("prog_placement_ind_lit", Gradedtests.program_test prog_placement_ind_lit 0x400001L);
-
-    ("prog_leaq_ind2", Gradedtests.program_test prog_leaq_ind2 0x400018L);
+  Test ("Debug: Tests by dbernhard", [
+    ("prog_exit", Gradedtests.program_test prog_nothing 0L)
+    ; ("prog_movq_ret3", Gradedtests.program_test (prog_int 3) 3L)
+    ; ("prog_callq_ret900", Gradedtests.program_test (prog_callq_ret 900) 900L)
+    ; ("prog_double_symb", redefinedsym_test prog_double_symb)
+    ; ("prog_placement", Gradedtests.program_test prog_placement 0x400010L)
+    ; ("prog_placement_ind_lit", Gradedtests.program_test prog_placement_ind_lit 0x400001L)
+    ; ("prog_leaq_ind2", Gradedtests.program_test prog_leaq_ind2 0x400018L)
 
   ])
 ]
