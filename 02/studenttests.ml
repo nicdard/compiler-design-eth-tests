@@ -175,6 +175,31 @@ let fibonacci = [
                         ]
 ]
 
+let log (a: int64) = [
+    text "log"
+    [ Cmpq, [~$2; ~%Rdi]
+    ; J Lt, [~$$"exit"]
+    ; Pushq, [~%Rax]
+    ; Movq, [~%Rdi; ~%Rax]
+    ; Shrq, [~$63; ~%Rax]
+    ; Addq, [~%Rdi; ~%Rax]
+    ; Sarq, [~$1; ~%Rax]
+    ; Movq, [~%Rax; ~%Rdi]
+    ; Callq, [~$$"log"]
+    ; Addq, [~$1; ~%Rax]
+    ; Addq, [~$8; ~%Rsp]
+    ; Retq, []];
+    text "exit"
+    [ Xorq, [~%Rax; ~%Rax]
+    ; Retq, []];
+    text "main"
+    [ Pushq, [~%Rax]
+    ; Movq, [Imm (Lit a); ~%Rdi]
+    ; Callq, [~$$"log"]
+    ; Popq, [~%Rcx]
+    ; Retq, []];
+  ]
+
 let cc_not = fun () -> Gradedtests.test_machine
   [InsB0 (Movq, [~$1; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ;InsB0 (Notq, [~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
@@ -482,5 +507,13 @@ let provided_tests : suite = [
     ; ("prog_mov_ind3", Gradedtests.program_test prog_mov_ind3 39L)
     ; ("prog_dec_reg", Gradedtests.program_test prog_dec_reg 11L)
 
+  ]);
+  Test ("Debug End-to-end Log Tests", [
+    ("log 1", Gradedtests.program_test (log 1L) (0L))
+    ; ("log 2", Gradedtests.program_test (log 2L) (1L))
+    ; ("log 3", Gradedtests.program_test (log 3L) (1L))
+    ; ("log 4419", Gradedtests.program_test (log 4419L) (12L))
+    ; ("log 15630003", Gradedtests.program_test (log 15630003L) (23L))
+    ; ("log 2^63-1", Gradedtests.program_test (log 0x7fffffffffffffffL) (62L))
   ])
 ]
