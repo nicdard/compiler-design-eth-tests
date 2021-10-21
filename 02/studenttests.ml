@@ -554,7 +554,7 @@ let instruction_tests = [
     (fun m -> m.regs.(rind Rax) = 90L));
   ("leaq", Gradedtests.machine_test "(%rax)" 2 (leaq_simpl 10L (Ind2 Rax))
     (fun m -> m.regs.(rind Rax) = 10L));
-  ("leaq", Gradedtests.machine_test "90(%rax)" 2 (leaq_simpl 10L (Ind3 (Lit 10L, Rax)))
+  ("leaq", Gradedtests.machine_test "10(%rax)" 2 (leaq_simpl 10L (Ind3 (Lit 10L, Rax)))
     (fun m -> m.regs.(rind Rax) = 20L));
 ]
 
