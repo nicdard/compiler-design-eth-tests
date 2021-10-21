@@ -278,8 +278,8 @@ let condition_flag_set_tests =
   ; ("cc_xor", Gradedtests.cs_test 2 (cc_xor ()) (false, false, false))
   ; ("cc_not", Gradedtests.csi_test 2 (cc_not ()))
   ; ("cs_not", Gradedtests.csi_test 2 (cc_not ()))
-  ; ("cc_and_arg =0", Gradedtests.cs_test 2 (cc_and_arg 0 12345) (false, false, true))
-  ; ("cc_and_arg =-1", Gradedtests.cs_test 2 (cc_and_arg (-1) (-1)) (false, true, false))
+  ; ("cc_and_arg_eq_0", Gradedtests.cs_test 2 (cc_and_arg 0 12345) (false, false, true))
+  ; ("cc_and_arg_eq_neg_1", Gradedtests.cs_test 2 (cc_and_arg (-1) (-1)) (false, true, false))
 
     (* Bit-manipulation instructions. *)
   ; ("cc_sar_0_a", Gradedtests.cc_test "OF:false SF:false ZF:false" 2 (cc_sar 0 0x0F0F0F0FL) (false, false, false)
@@ -518,28 +518,28 @@ let instruction_tests = [
       && int64_of_sbytes (Gradedtests.sbyte_list m.mem (mem_size-8)) = Int64.sub Int64.max_int 254L
     )
   );
-  ("setb_cmp", Gradedtests.machine_test "1" 6 (set_cmp 10L 10L Eq)
+  ("setb_cmp", Gradedtests.machine_test "rax=*65528=0x7FFFFFFFFFFFFF01L" 6 (set_cmp 10L 10L Eq)
     (fun m ->
       let exp = Int64.sub Int64.max_int 254L in
         m.regs.(rind Rax) = exp
         && int64_of_sbytes (Gradedtests.sbyte_list m.mem (mem_size-8)) = exp
     )
   );
-  ("setb_cmp", Gradedtests.machine_test "1" 6 (set_cmp 11L 10L Eq)
+  ("setb_cmp", Gradedtests.machine_test "rax=*65528=0x7FFFFFFFFFFFFF00L" 6 (set_cmp 11L 10L Eq)
     (fun m ->
       let exp = Int64.sub Int64.max_int 255L in
         m.regs.(rind Rax) = exp
         && int64_of_sbytes (Gradedtests.sbyte_list m.mem (mem_size-8)) = exp
     )
   );
-  ("setb_cmp", Gradedtests.machine_test "1" 6 (set_cmp 10L 10L Ge)
+  ("setb_cmp", Gradedtests.machine_test "rax=*65528=0x7FFFFFFFFFFFFF01L" 6 (set_cmp 10L 10L Ge)
     (fun m ->
       let exp = Int64.sub Int64.max_int 254L in
         m.regs.(rind Rax) = exp
         && int64_of_sbytes (Gradedtests.sbyte_list m.mem (mem_size-8)) = exp
     )
   );
-  ("setb_cmp", Gradedtests.machine_test "1" 6 (set_cmp (-10L) 10L Le)
+  ("setb_cmp", Gradedtests.machine_test "rax=*65528=0x7FFFFFFFFFFFFF01L" 6 (set_cmp (-10L) 10L Le)
     (fun m ->
       let exp = Int64.sub Int64.max_int 254L in
         m.regs.(rind Rax) = exp
@@ -552,18 +552,11 @@ let instruction_tests = [
     (fun m -> m.regs.(rind Rax) = -20L));
   ("leaq", Gradedtests.machine_test "90()" 2 (leaq_simpl 0L (Ind1 (Lit 90L)))
     (fun m -> m.regs.(rind Rax) = 90L));
-  ("leaq", Gradedtests.machine_test "$90" 2 (leaq_simpl 10L (Ind2 Rax))
+  ("leaq", Gradedtests.machine_test "(%rax)" 2 (leaq_simpl 10L (Ind2 Rax))
     (fun m -> m.regs.(rind Rax) = 10L));
-  ("leaq", Gradedtests.machine_test "$90" 2 (leaq_simpl 10L (Ind3 (Lit 10L, Rax)))
+  ("leaq", Gradedtests.machine_test "90(%rax)" 2 (leaq_simpl 10L (Ind3 (Lit 10L, Rax)))
     (fun m -> m.regs.(rind Rax) = 20L));
 ]
-
-let redefinedsym_test (p:prog) () =
-  try ignore (assemble p);
-    failwith "Should have raised Redefined_sym"
-  with
-    | Redefined_sym _ -> ()
-    | _ -> failwith "Should have raised Redefined_sym"
 
 let provided_tests : suite = [
   Test ("Debug: End-to-end Tests", [
@@ -572,7 +565,7 @@ let provided_tests : suite = [
     ; ("addq", Gradedtests.program_test (main_driver::addq) 3L )
     ; ("fibonacci", Gradedtests.program_test (main_driver::fibonacci) 832040L)
   ]);
-  Test ("Debug: Condition Flags Set Tests", [
+  Test ("Debug: Lookup Table Generation", [
     ("redefined sym", redefinedsym_test [text "main" [Retq,[]]; text "main" [Retq,[]]])
     ; ("redefined sym", redefinedsym_test [text "a" []; text "main" [Retq,[]]; text "a" [Retq,[]]])
   ]);
