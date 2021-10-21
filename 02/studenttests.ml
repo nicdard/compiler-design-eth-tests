@@ -200,6 +200,94 @@ let log (a: int64) = [
     ; Retq, []];
   ]
 
+(* Parse a string to an integer using different base (<=16)                    *)
+(* Inspired by https://github.com/JuliaLang/Microbenchmarks/blob/master/perf.c *)
+(* Assemble with Compiler Explorer                                             *)
+(* Adapted by Zikai Liu                                                        *)
+let parse_int (input: string) (base: int) = [
+  text "_Z9parse_intPKcl" [
+      Pushq, [ ~%Rbp ]
+    ; Movq, [ ~%Rsp; ~%Rbp ]
+    ; Movq, [ ~%Rdi; Ind3 (Lit (-8L), Rbp) ]
+    ; Movq, [ ~%Rsi; Ind3 (Lit (-16L), Rbp) ]
+    ; Movq, [ ~$0; Ind3 (Lit (-24L), Rbp) ]
+  ]
+  ; text ".LBB0_1" [
+      Movq, [ Ind3 (Lit (-8L), Rbp); ~%Rax ]
+    ; Movq, [ Ind2 Rax; ~%Rax ]
+    ; Andq, [ ~$255; ~%Rax ]
+    ; Cmpq, [ ~$0; ~%Rax ]
+    ; J Eq, [ ~$$".LBB0_15" ]
+    ; Movq, [ Ind3 (Lit (-8L), Rbp); ~%Rax ]
+    ; Movq, [ Ind2 Rax; ~%Rax ]
+    ; Andq, [ ~$255; ~%Rax ]
+    ; Movq, [ ~%Rax; Ind3 (Lit (-32L), Rbp) ]
+    ; Movq, [ ~$0; Ind3 (Lit (-40L), Rbp) ]
+    ; Cmpq, [ ~$48; Ind3 (Lit (-32L), Rbp) ]
+    ; J Lt, [ ~$$".LBB0_5" ]
+    ; Cmpq, [ ~$57; Ind3 (Lit (-32L), Rbp) ]
+    ; J Gt, [ ~$$".LBB0_5" ]
+    ; Movq, [ Ind3 (Lit (-32L), Rbp); ~%Rax ]
+    ; Subq, [ ~$48; ~%Rax ]
+    ; Movq, [ ~%Rax; Ind3 (Lit (-40L), Rbp) ]
+    ; Jmp, [ ~$$".LBB0_13" ]
+  ]
+  ; text ".LBB0_5" [
+      Cmpq, [ ~$65; Ind3 (Lit (-32L), Rbp) ]
+    ; J Lt, [ ~$$".LBB0_8" ]
+    ; Cmpq, [ ~$90; Ind3 (Lit (-32L), Rbp) ]
+    ; J Gt, [ ~$$".LBB0_8" ]
+    ; Movq, [ Ind3 (Lit (-32L), Rbp); ~%Rax ]
+    ; Subq, [ ~$65; ~%Rax ]
+    ; Addq, [ ~$10; ~%Rax ]
+    ; Movq, [ ~%Rax; Ind3 (Lit (-40L), Rbp) ]
+    ; Jmp, [ ~$$".LBB0_12" ]
+  ]
+  ; text ".LBB0_8" [
+      Cmpq, [ ~$97; Ind3 (Lit (-32L), Rbp) ]
+    ; J Lt, [ ~$$".LBB0_11" ]
+    ; Cmpq, [ ~$122; Ind3 (Lit (-32L), Rbp) ]
+    ; J Gt, [ ~$$".LBB0_11" ]
+    ; Movq, [ Ind3 (Lit (-32L), Rbp); ~%Rax ]
+    ; Subq, [ ~$97; ~%Rax ]
+    ; Addq, [ ~$10; ~%Rax ]
+    ; Movq, [ ~%Rax; Ind3 (Lit (-40L), Rbp) ]
+  ]
+  ; text ".LBB0_11" [
+      Jmp, [ ~$$".LBB0_12" ]
+  ]
+  ; text ".LBB0_12" [
+      Jmp, [ ~$$".LBB0_13" ]
+  ]
+  ; text ".LBB0_13" [
+      Movq, [ Ind3 (Lit (-24L), Rbp); ~%Rax ]
+    ; Imulq, [ Ind3 (Lit (-16L), Rbp); ~%Rax ]
+    ; Addq, [ Ind3 (Lit (-40L), Rbp); ~%Rax ]
+    ; Movq, [ ~%Rax; Ind3 (Lit (-24L), Rbp) ]
+    ; Movq, [ Ind3 (Lit (-8L), Rbp); ~%Rax ]
+    ; Addq, [ ~$1; ~%Rax ]
+    ; Movq, [ ~%Rax; Ind3 (Lit (-8L), Rbp) ]
+    ; Jmp, [ ~$$".LBB0_1" ]
+  ]
+  ; text ".LBB0_15" [
+      Movq, [ Ind3 (Lit (-24L), Rbp); ~%Rax ]
+    ; Popq, [ ~%Rbp ]
+    ; Retq, []
+  ]
+  ; gtext "main" [
+      Pushq, [ ~%Rbp ]
+    ; Movq, [ ~%Rsp; ~%Rbp ]
+    ; Movq, [ ~$$".L.str"; ~%Rdi ]
+    ; Movq, [ ~$base; ~%Rsi ]
+    ; Callq, [ ~$$"_Z9parse_intPKcl" ]
+    ; Popq, [ ~%Rbp ]
+    ; Retq, []
+  ]
+  ; data ".L.str" [
+    Asciz input
+  ]
+]
+
 let cc_not = fun () -> Gradedtests.test_machine
   [InsB0 (Movq, [~$1; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
   ;InsB0 (Notq, [~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
@@ -564,6 +652,11 @@ let provided_tests : suite = [
     ; ("negq", Gradedtests.program_test (main_driver::negq) (Int64.neg 99L) )
     ; ("addq", Gradedtests.program_test (main_driver::addq) 3L )
     ; ("fibonacci", Gradedtests.program_test (main_driver::fibonacci) 832040L)
+    ; ("parse_int_1", Gradedtests.program_test (parse_int "ECEB" 16) 0xECEBL)
+    ; ("parse_int_2", Gradedtests.program_test (parse_int "42" 10) 42L)
+    ; ("parse_int_3", Gradedtests.program_test (parse_int "0101" 16) 0x0101L)
+    ; ("parse_int_4", Gradedtests.program_test (parse_int "0101" 2) 0b0101L)
+    ; ("parse_int_5", Gradedtests.program_test (parse_int "6543" 8) 0o6543L)
   ]);
   Test ("Debug: Lookup Table Generation", [
     ("redefined sym", redefinedsym_test [text "main" [Retq,[]]; text "main" [Retq,[]]])
