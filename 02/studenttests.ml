@@ -277,7 +277,7 @@ let condition_flag_set_tests =
   ; ("cc_or",  Gradedtests.cs_test 2 (cc_or  ()) (false, false, false))
   ; ("cc_xor", Gradedtests.cs_test 2 (cc_xor ()) (false, false, false))
   ; ("cc_not", Gradedtests.csi_test 2 (cc_not ()))
-  ; ("cs_not", Gradedtests.csi_test 2 (cc_not ()))
+  ; ("cc_not_negative", Gradedtests.cs_test 3 (cc_not_negative ()) (false, false, false))
   ; ("cc_and_arg_eq_0", Gradedtests.cs_test 2 (cc_and_arg 0 12345) (false, false, true))
   ; ("cc_and_arg_eq_neg_1", Gradedtests.cs_test 2 (cc_and_arg (-1) (-1)) (false, true, false))
 
