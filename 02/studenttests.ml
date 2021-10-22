@@ -487,6 +487,36 @@ let instruction_tests = [
     (fun m -> m.regs.(rind Rax) = -20L));
 ]
 
+
+(*GEORGR'S SIMPLE INSTRUCTION TESTS*)
+let setq = Gradedtests.test_machine
+    [InsB0 (Movq, [~$512; ~%Rcx]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+    ;InsB0 (Movq, [~$13; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+    ;InsB0 (Movq, [~$13; ~%Rbx]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+    ;InsB0 (Cmpq, [~%Rax; ~%Rbx]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+    ;InsB0 (Set (Eq), [~%Rcx]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+    ]
+
+
+let callq_retq = Gradedtests.test_machine
+    [InsB0 (Callq, [~$(0x400000 + 24)]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+    ;InsB0 (Movq, [~$25; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+    ;InsB0 (Addq, [~%Rbx; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+    ;InsB0 (Movq, [~$13; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+    ;InsB0 (Movq, [~$13; ~%Rbx]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+    ;InsB0 (Addq, [~%Rax; ~%Rbx]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+    ;InsB0 (Retq, []);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
+    ]
+
+let georgr_insn_tests = [
+  ("setq", Gradedtests.machine_test "~%Rcx = 513" 5 setq
+     (fun m -> m.regs.(rind Rcx) = 513L)
+  );
+  ("callq_retq", Gradedtests.machine_test "~%Rax = 51, ~%Rbx = 26" 7 callq_retq
+     (fun m -> (m.regs.(rind Rax) = 51L) && (m.regs.(rind Rbx) = 26L))
+  )
+]
+
 let provided_tests : suite = [
   Test ("Debug: End-to-end Tests", [
     ("empty main", Gradedtests.program_test [empty_main] 0L)
@@ -515,5 +545,7 @@ let provided_tests : suite = [
     ; ("log 4419", Gradedtests.program_test (log 4419L) (12L))
     ; ("log 15630003", Gradedtests.program_test (log 15630003L) (23L))
     ; ("log 2^63-1", Gradedtests.program_test (log 0x7fffffffffffffffL) (62L))
-  ])
+  ]);
+  Test ("Debug: georgr's redundant instruction tests", georgr_insn_tests)
+
 ]
