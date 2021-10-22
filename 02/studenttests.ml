@@ -488,7 +488,6 @@ let instruction_tests = [
 ]
 
 
-(*GEORGR'S SIMPLE INSTRUCTION TESTS*)
 let setq = Gradedtests.test_machine
     [InsB0 (Movq, [~$512; ~%Rcx]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
     ;InsB0 (Movq, [~$13; ~%Rax]);InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag;InsFrag
@@ -509,10 +508,10 @@ let callq_retq = Gradedtests.test_machine
     ]
 
 let georgr_insn_tests = [
-  ("setq", Gradedtests.machine_test "~%Rcx = 513" 5 setq
+  ("setq", Gradedtests.machine_test "rcx=513L" 5 setq
      (fun m -> m.regs.(rind Rcx) = 513L)
   );
-  ("callq_retq", Gradedtests.machine_test "~%Rax = 51, ~%Rbx = 26" 7 callq_retq
+  ("callq_retq", Gradedtests.machine_test "rax=51L, rbx=26L" 7 callq_retq
      (fun m -> (m.regs.(rind Rax) = 51L) && (m.regs.(rind Rbx) = 26L))
   )
 ]
