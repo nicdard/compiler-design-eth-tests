@@ -1,3 +1,4 @@
+
 @gint = global i64 42
 
 define i64* @get_global() {

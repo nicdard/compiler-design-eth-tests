@@ -1,4 +1,3 @@
-
 %var1 = type { i64, i64*, [4 x i64], i64 }
 
 @gint = global i64 42
