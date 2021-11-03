@@ -1,3 +1,4 @@
+
 @gint = global i64 42
 
 define i64 @main(i64 %argc, i8** %arcv) {
@@ -8,7 +9,6 @@ define i64 @main(i64 %argc, i8** %arcv) {
   store i64 %3, i64* %1
   store i64 10, i64* %2
 
-  call void @swap(i64* %1, i64* %2)
   call void @swap(i64* %1, i64* %2)
   
   %4 = load i64, i64* %1

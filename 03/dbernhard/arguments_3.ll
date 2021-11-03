@@ -1,3 +1,4 @@
+
 define i64 @sum(i64 %x1, i64 %x2, i64 %x3, i64 %x4, i64 %x5, i64 %x6, i64 %x7, i64 %x8, i64 %x9, i64 %x10) {
   %1 = add i64 %x1, %x2
   %2 = add i64 %1, %x3

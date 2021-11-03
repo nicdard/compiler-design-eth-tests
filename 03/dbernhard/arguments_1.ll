@@ -1,3 +1,4 @@
+
 @gint = global i64 10
 
 define i64 @sum(i64 %x1, i64 %x2, i64 %x3, i64 %x4, i64 %x5, i64 %x6, i64 %x7, i64 %x8, i64 %x9, i64 %x10) {

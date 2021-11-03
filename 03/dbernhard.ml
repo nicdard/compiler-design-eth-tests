@@ -1,5 +1,5 @@
 
-let prefix = "./compiler-design-eth-tests/03/dbernhard_"
+let prefix = "./compiler-design-eth-tests/03/dbernhard/"
 
 let dbernhard_tests = [
     prefix ^ "load_simple.ll", 23L

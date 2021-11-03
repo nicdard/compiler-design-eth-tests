@@ -1,4 +1,3 @@
-  
 define void @square(i64* %0) {
   %2 = alloca i64
   %3 = alloca i64
