@@ -24,17 +24,17 @@ If you want to integrate these tests into your project instead of copying the fi
 ```
      main.native: gradedtests.ml studenttests.ml main.ml driver.ml backend.ml util/platform.ml
 -       ocamlbuild -Is util,x86,ll,grading -libs unix,str,nums main.native -use-menhir
-+       ocamlbuild -Is util,x86,ll,grading,compiler-design-eth-tests/03 -libs unix,str,nums main.native -use-menhir
++       ocamlbuild -Is util,x86,ll,grading,compiler-design-eth-tests/{03, 02} -libs unix,str,nums main.native -use-menhir
  
  main.byte: gradedtests.ml studenttests.ml main.ml driver.ml backend.ml util/platform.ml
 -       ocamlbuild -Is util,x86,ll,grading -libs unix,str,nums main.byte -use-menhir
-+       ocamlbuild -Is util,x86,ll,grading,compiler-design-eth-tests/03 -libs unix,str,nums main.byte -use-menhir
++       ocamlbuild -Is util,x86,ll,grading,compiler-design-eth-tests/{03, 02} -libs unix,str,nums main.byte -use-menhir
 ```
 
 2a. *Optional*: If you use merlin you should add these lines to the `.merlin` file:
 ```
 +B _build/compiler-design-eth-tests
-+B _build/compiler-design-eth-tests/03
++B _build/compiler-design-eth-tests/{03, 02}
 ```
 3. Add our shared suite to `main.ml`:
 ```
