@@ -685,7 +685,7 @@ let georgr_insn_tests = [
   )
 ]
 
-let provided_tests : suite = [
+let shared_suite : suite = [
   Test ("Debug: End-to-end Tests", [
     ("empty main", Gradedtests.program_test [empty_main] 0L)
     ; ("negq", Gradedtests.program_test (main_driver::negq) (Int64.neg 99L) )
