@@ -83,6 +83,16 @@ let prog_leaq_ind2 =
         ]
   ]
 
+let prog_shift = 
+  [ text "main"
+    [ Movq, [~$3; ~%Rcx]
+    ; Movq, [~$233; ~%Rbx]
+    ; Shrq, [~%Rcx; ~%Rbx]
+    ; Movq, [~%Rbx; ~%Rax]
+    ; Retq, []
+  ]
+]
+
 let prog_mov_ind3 =
   [ data "foo"
         [ Quad (Lit 420L)
@@ -703,7 +713,7 @@ let provided_tests : suite = [
     ; ("prog_leaq_ind2", Gradedtests.program_test prog_leaq_ind2 0x400018L)
     ; ("prog_mov_ind3", Gradedtests.program_test prog_mov_ind3 39L)
     ; ("prog_dec_reg", Gradedtests.program_test prog_dec_reg 11L)
-
+    ; ("prog_shift by variable amount", Gradedtests.program_test prog_shift 29L)
   ]);
   Test ("Debug End-to-end Log Tests", [
     ("log 1", Gradedtests.program_test (log 1L) (0L))
