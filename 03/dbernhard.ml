@@ -8,8 +8,6 @@ let dbernhard_tests = [
   ; prefix ^ "return_pointer.ll", 42L
   ; prefix ^ "bitcast_1.ll", 255L
   ; prefix ^ "bitcast_2.ll", 24L
-  ; prefix ^ "bitcast_3.ll", 24L
-  ; prefix ^ "bitcast_4.ll", 0L
   ; prefix ^ "swap_none.ll", 42L (* performs NO swap *)
   ; prefix ^ "swap_1.ll", 10L (* swaps once*)
   ; prefix ^ "swap_2.ll", 42L (* swaps twice (same as no swap)*)
