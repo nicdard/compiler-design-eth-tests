@@ -19,22 +19,22 @@ In any case, I will keep an eye at the course's forum in orther to gather all te
 ## Setup
 If you want to integrate these tests into your project instead of copying the files you can follow these steps:
 
-1. Clone this repo into the folder containing the `Makefile` of hw3.
+1. Clone this repo into the folder containing the `Makefile` of hw{2,3,4}.
 2. Adapt the Makefile to include these tests:
 ```
      main.native: gradedtests.ml studenttests.ml main.ml driver.ml backend.ml util/platform.ml
 -       ocamlbuild -Is util,x86,ll,grading -libs unix,str,nums main.native -use-menhir
-+       ocamlbuild -Is util,x86,ll,grading,compiler-design-eth-tests/{03, 02} -libs unix,str,nums main.native -use-menhir
++       ocamlbuild -Is util,x86,ll,grading,compiler-design-eth-tests/0{2,3,4} -libs unix,str,nums main.native -use-menhir
  
  main.byte: gradedtests.ml studenttests.ml main.ml driver.ml backend.ml util/platform.ml
 -       ocamlbuild -Is util,x86,ll,grading -libs unix,str,nums main.byte -use-menhir
-+       ocamlbuild -Is util,x86,ll,grading,compiler-design-eth-tests/{03, 02} -libs unix,str,nums main.byte -use-menhir
++       ocamlbuild -Is util,x86,ll,grading,compiler-design-eth-tests/0{2,3,4} -libs unix,str,nums main.byte -use-menhir
 ```
 
 2a. *Optional*: If you use merlin you should add these lines to the `.merlin` file:
 ```
 +B _build/compiler-design-eth-tests
-+B _build/compiler-design-eth-tests/{03, 02}
++B _build/compiler-design-eth-tests/0{2,3,4}
 ```
 3. Add our shared suite to `main.ml`:
 ```
