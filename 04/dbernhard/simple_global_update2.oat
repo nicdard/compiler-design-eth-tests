@@ -1,0 +1,11 @@
+global x = 42;
+
+int program(int argc, string[] args) {
+    update();
+    
+    return x;
+}
+
+void update() {
+    x = 11;
+}
