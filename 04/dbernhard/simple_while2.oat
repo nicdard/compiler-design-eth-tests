@@ -1,0 +1,15 @@
+global counter = 100;
+
+int program(int argc, string[] args) {
+    var x = 0;
+    while (condition()) {
+        x = x + 1;
+        counter = counter - 1;
+    }
+    
+    return x;
+}
+
+bool condition() {
+    return counter > 50;
+}
