@@ -1,5 +1,5 @@
 int program(int argc, string[] args) {
-    return 2*function(0) + function(1) + function(2);
+    return function(0) + function(1) + function(2);
 }
 
 int function(int x) {

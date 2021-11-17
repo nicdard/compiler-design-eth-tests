@@ -16,7 +16,6 @@ int program(int argc, string[] args) {
     return 0;
 }
 
-/* should have no effect */
 bool con(int b) {
     a = a + 1;
     b = b - 1;

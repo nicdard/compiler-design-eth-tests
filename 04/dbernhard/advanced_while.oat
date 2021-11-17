@@ -1,7 +1,7 @@
 int program(int argc, string[] args) {
     var x = 10;
 
-    while (x) {
+    while (x > 0) {
         x = x - 1;
     }
     
