@@ -1,0 +1,7 @@
+global x = 42;
+
+int program(int argc, string[] args) {
+    x = 11;
+    
+    return x;
+}

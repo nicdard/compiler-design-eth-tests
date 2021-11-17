@@ -1,0 +1,23 @@
+global a = 0;
+global b = 0;
+
+int program(int argc, string[] args) {
+    b = 5;
+
+    for (; con(b); a = a + 1;) {
+        print_string(string_of_int(a));
+        print_string(", ");    
+    }
+
+    print_int(a);
+    print_string(", b:");
+    print_int(b);
+    
+    return 0;
+}
+
+bool con(int b) {
+    a = a + 1;
+    b = b - 1;
+    return a < 10;
+}

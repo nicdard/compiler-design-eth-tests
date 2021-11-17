@@ -1,0 +1,38 @@
+global list = int[] null;
+
+bool isPrime (int x) {
+  if (x == 0 | x == 1) {
+    return false;
+  }
+
+  for (var i = 2; i < x; i = i + 1;)
+  {
+    var cur_num = x;
+    while (cur_num >= i) {
+      cur_num = cur_num - i;
+    }
+
+    if (cur_num == 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+int program (int argc, string[] argv) {
+  var n = 100;
+  /* initialize array */
+  list = new int[n];
+  for (var i = 0; i < 100; i = i + 1;) {
+    list[i] = (i + 1);
+  }
+
+  var count = 0;
+  for (var i = 0; i < n; i = i + 1;)
+  {
+    if(isPrime(list[i])) {
+      count = count + 1;
+    }
+  }
+  return count;
+}

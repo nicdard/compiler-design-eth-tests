@@ -1,0 +1,55 @@
+global eye = new int[][]{new int[]{1, 0, 0}, new int[]{0, 1, 0}, new int[]{0,0,1}};
+
+int program (int argc, string[] argv) {
+  var eye = new int[][]{new int[]{1, 0, 0}, new int[]{0, 1, 0}, new int[]{0,0,1}};
+
+  var mat_1 = new int[][]{new int[]{1, 4, 3}, new int[]{9, 1, 2}, new int[]{2,0,1}};
+  var mat_2 = new int[][]{new int[]{1, 0, 2}, new int[]{1, 1, 2}, new int[]{2,1,1}};
+
+  /* print_matrix(eye, true);
+  print_string("\n");
+  print_matrix(mat_1, true);
+  print_string("\n");
+  print_matrix(mat_2, true);
+  print_string("\n"); */
+
+  print_matrix(mult(mat_1, mat_2), false);
+  
+  return 0;
+}
+
+int[][] new_mat() {
+  return new int[][]{new int[3], new int[3], new int[3]};
+}
+
+
+int[][] mult(int[][] mata, int[][] matb) {
+  var res = new_mat();
+
+  for (var i = 0; i < 3; i = i + 1;) {
+    for (var j = 0; j < 3; j = j + 1;) {
+      for (var k = 0; k < 3; k = k + 1;) {
+        res[i][j] = res[i][j] + mata[i][k] * matb[k][j];
+      }
+    }
+  }
+
+  return res;
+}
+
+
+void print_matrix(int[][] mat, bool pretty) {
+  for (var i = 0; i < 3; i = i + 1;) {
+    if (pretty) {
+      print_string("| ");
+    }
+    
+    for (var j = 0; j < 3; j = j + 1;) {
+      print_int(mat[i][j]);
+      print_string(" ");
+    }
+    if (pretty) {
+      print_string(" |\n");
+    }
+  }
+}

@@ -1,0 +1,6 @@
+int program (int argc, string[] argv) {
+  /* 0 argument is the name of the program */
+  var arr = array_of_string(argv[1]);
+  
+  return arr[1];
+}
