@@ -1,0 +1,9 @@
+int program (int argc, string[] argv) {
+    var x = 10;
+    var y = x != 10;
+    if (y) {
+        return 1;
+    } else {
+        return 0;
+    }
+}

@@ -1,0 +1,3 @@
+int program (int argc, string[] argv) {
+    return argc;
+}
