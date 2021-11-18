@@ -21,6 +21,7 @@ let simple_tests = [
   ; (prefix ^ "for_cond_fun2.oat", "", "1, 3, 5, 7, 9, 11, b:50")
   ; (prefix ^ "mat_mult.oat", "", "11 7 13 14 3 22 4 1 5 0")
   ; (prefix ^ "mat_mult2.oat", "", "11 7 13 14 3 22 4 1 5 0")
+  ; (prefix ^ "null_update.oat", "", "12")
 ]
 
 let dbernhard_tests = (Gradedtests.executed_oat_file simple_tests)

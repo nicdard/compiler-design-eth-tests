@@ -1,0 +1,7 @@
+int program (int argc, string[] argv) {
+    var x = int[] null;
+
+    x = new int[] {10, 11, 12};
+  
+    return x[2];
+}
