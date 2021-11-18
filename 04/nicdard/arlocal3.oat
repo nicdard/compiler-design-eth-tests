@@ -1,0 +1,7 @@
+int program (int argc, string[] argv) {
+  var arr = new int[] {12, 23, 32};
+  var x = new int[3];
+  arr = x;
+  x[2] = 3;
+  return arr[2];
+}

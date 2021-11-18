@@ -1,0 +1,5 @@
+int program (int argc, string[] argv) {
+    var s = "local string";
+    print_string(s);
+    return 0;
+}

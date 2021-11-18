@@ -1,0 +1,5 @@
+global v = "hello";
+
+int program(int argc, string[] args) {
+  return 15;
+}

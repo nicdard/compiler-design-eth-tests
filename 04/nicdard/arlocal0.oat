@@ -1,0 +1,6 @@
+global v = new int[] {1, 17};
+
+int program(int argc, string[] args) {
+  var v = new int[] {1, 17};
+  return 15;
+}

@@ -1,0 +1,6 @@
+global v = new int[][] {new int[]{1,2,3}, new int[]{15,16,17}};
+
+int program(int argc, string[] args) {
+  var v = new int[][] {new int[]{1,2,3}, new int[]{15,16,17}};
+  return 15;
+}
