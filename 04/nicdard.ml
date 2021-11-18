@@ -21,8 +21,18 @@ let easy_tests =
   ; ("and2.oat", "", "11")
   ; ("or1.oat", "", "26")
   ; ("or2.oat", "", "26")
+  ; ("call.oat", "", "10")
   ; ("sgstring.oat", "", "0")
   ; ("nullref.oat", "", "0")
+  ; ("shoisted.oat", "", "local string0")
+  ; ("shoisted2.oat", "", "0")
+  ; ("arglobal.oat", "", "15")
+  ; ("arglobal2.oat", "", "15")
+  ; ("arglobal3.oat", "", "10")
+  ; ("arlocal0.oat", "", "15")
+  ; ("arlocal1.oat", "", "15")
+  ; ("arlocal2.oat", "", "0")
+  ; ("arlocal3.oat", "", "3")
   ]
 
 let nicdard_tests = Gradedtests.executed_oat_file @@ prefix easy_tests

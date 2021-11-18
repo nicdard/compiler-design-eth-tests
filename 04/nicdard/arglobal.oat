@@ -1,0 +1,5 @@
+global v = new int[] {1,2,3};
+
+int program(int argc, string[] args) {
+  return 15;
+}

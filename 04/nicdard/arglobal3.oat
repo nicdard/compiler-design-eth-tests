@@ -1,0 +1,8 @@
+global arr = new int[][] {new int[]{1,4}, new int[]{2,5}, new int[]{3,6}};
+
+int program (int argc, string[] argv) {
+  var x = new int[][] {new int[2], new int[2], new int[2]};
+  arr = x;
+  x[2][2] = 10;
+  return arr[2][2];
+}
