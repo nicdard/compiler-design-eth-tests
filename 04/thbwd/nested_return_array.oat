@@ -1,0 +1,16 @@
+int program(int argc, string[] args) {
+    function(0);
+    function(1);
+    function(2);
+    return 0;
+}
+
+int[] function(int x) {
+    if (x == 0) {
+        return int[] null;
+    } else if (x == 1) {
+        return new int[]{4, 1, 9};
+    } else {
+        return new int[6];
+    }
+}
