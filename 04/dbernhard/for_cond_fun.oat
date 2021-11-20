@@ -8,10 +8,9 @@ int program(int argc, string[] args) {
 
         y = y + 1;
         x = x + 1;
-
-    } /* 10, 12, */
+    }
     
-    return x; /* should return 10 */
+    return x;
 }
 
 /* should have no effect */

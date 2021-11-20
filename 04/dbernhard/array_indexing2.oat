@@ -1,0 +1,10 @@
+global arr = new int[]{1, 2, 3, 4};
+global arr2 = new int[]{101, 102, 103, 104};
+
+
+int program (int argc, string[] argv) {
+  var darr = new int[][] {arr2, arr};
+
+  /*        2       +    103 */
+  return darr[0][1] + darr[1][2];
+}

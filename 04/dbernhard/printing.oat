@@ -1,0 +1,12 @@
+global str = "he";
+
+string get() {
+    return "ll";
+}
+
+int program(int argc, string[] args) {
+    print_string(str);
+    print_string(get());
+    print_string("o");
+    return 42;
+}

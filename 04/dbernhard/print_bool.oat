@@ -1,0 +1,12 @@
+global gb = false;
+
+bool get() {
+    return true;
+}
+
+int program(int argc, string[] args) {
+    print_bool(gb);
+    print_bool(get());
+    print_bool(false);
+    return 5;
+}

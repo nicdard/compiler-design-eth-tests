@@ -1,0 +1,11 @@
+
+int[] call_empty() {
+  return int[] null;
+}
+
+int program (int argc, string[] argv) {
+  var arr = call_empty();
+  arr = new int[10];
+  arr[1] = 5;
+  return arr[1]; 
+}
