@@ -1,0 +1,23 @@
+int program (int argc, string[] argv) {
+    var x = abs2();
+    x = x + abs();
+    return x;
+}
+
+int abs() {
+    if (true) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int abs2() {
+    if (true) {
+        return 0;
+    } else if (false) {
+        return 1;
+    } else {
+        return 7;
+    }
+}

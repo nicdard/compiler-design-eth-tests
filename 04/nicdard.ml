@@ -33,6 +33,10 @@ let easy_tests =
   ; ("arlocal1.oat", "", "15")
   ; ("arlocal2.oat", "", "0")
   ; ("arlocal3.oat", "", "3")
+  ; ("if.oat", "", "3")
+  ; ("function.oat", "", "1")
+  ; ("whileterminator1.oat", "", "10")
+  ; ("whileterminator2.oat", "", "0")
   ]
 
 let nicdard_tests = Gradedtests.executed_oat_file @@ prefix easy_tests
