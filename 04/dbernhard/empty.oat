@@ -1,0 +1,14 @@
+
+void call_empty() {
+  return;
+}
+
+void call_empty2() {
+  call_empty();
+  return;
+}
+
+int program (int argc, string[] argv) {
+  call_empty2();
+  return 5; 
+}

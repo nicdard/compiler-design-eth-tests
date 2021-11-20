@@ -1,0 +1,10 @@
+global mat_1 = new int[][]{new int[]{1, 4, 3}, new int[]{9, 1, 2}, new int[]{2,0,1}};
+
+int[] get() {
+    return mat_1[0];
+}
+
+int program(int argc, string[] args) {
+    var x = mat_1[1][1] + mat_1[2][0] + get()[0];
+    return x;
+}
