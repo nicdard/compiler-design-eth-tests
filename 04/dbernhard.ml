@@ -5,6 +5,8 @@ let prefix = "./compiler-design-eth-tests/04/dbernhard/"
 let simple_tests = [
   (prefix ^ "simple_while.oat", "", "10")
   ; (prefix ^ "simple_while2.oat", "", "50") (* function return value as condition *)
+  ; (prefix ^ "while_false.oat", "", "4")
+  ; (prefix ^ "while_false2.oat", "", "4")
   ; (prefix ^ "array_indexing.oat", "", "205") (* various indices *)
   ; (prefix ^ "array_indexing2.oat", "", "105") (* 2d array *)
   ; (prefix ^ "length.oat", "asdf", "4") (* returns length of the first argument *)
@@ -20,6 +22,8 @@ let simple_tests = [
   ; (prefix ^ "tests_if4.oat", "", "60")
   ; (prefix ^ "tests_if5.oat", "", "60")
   ; (prefix ^ "tests_if6.oat", "", "65")
+  ; (prefix ^ "tests_if7.oat", "", "50")
+  ; (prefix ^ "tests_if8.oat", "", "50")
   ; (prefix ^ "advanced_add.oat", "", "4")
   ; (prefix ^ "count_primes_less_100.oat", "", "25")
   ; (prefix ^ "for_cond_fun.oat", "", "10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 10")
