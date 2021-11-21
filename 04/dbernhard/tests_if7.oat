@@ -4,12 +4,17 @@ int program(int argc, string[] args) {
 
 int function(int x) {
     if (x == 0) {
-        
+        if (true) {
+            return 1;
+        }
     } else if (x == 1) {
-        
+        if (true) {
+            return 2;
+        }
     } else if (x == 2) {
         return 50;
     } else {
         return 0;
     }
+    return 100;
 }

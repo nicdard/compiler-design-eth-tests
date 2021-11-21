@@ -22,7 +22,7 @@ let simple_tests = [
   ; (prefix ^ "tests_if4.oat", "", "60")
   ; (prefix ^ "tests_if5.oat", "", "60")
   ; (prefix ^ "tests_if6.oat", "", "65")
-  ; (prefix ^ "tests_if7.oat", "", "50")
+  ; (prefix ^ "tests_if7.oat", "", "53")
   ; (prefix ^ "tests_if8.oat", "", "50")
   ; (prefix ^ "advanced_add.oat", "", "4")
   ; (prefix ^ "count_primes_less_100.oat", "", "25")
