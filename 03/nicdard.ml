@@ -27,7 +27,7 @@ let executed tests =
 
 (* Add prefix to tests *)
 let prefix = List.map (fun (fname, expected_result) -> 
-  ("./compiler-design-eth-tests/03/nicdard/" ^ fname, expected_result))
+  (Test_config.global_prefix ^ "./compiler-design-eth-tests/03/nicdard/" ^ fname, expected_result))
 
 let gep_tests = prefix
   [ "gep0.ll", 1L

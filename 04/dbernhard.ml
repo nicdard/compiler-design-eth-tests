@@ -1,6 +1,6 @@
 open Assert
 
-let prefix = "./compiler-design-eth-tests/04/dbernhard/"
+let prefix = Test_config.global_prefix ^ "./compiler-design-eth-tests/04/dbernhard/"
 
 let simple_tests = [
   (prefix ^ "simple_while.oat", "", "10")

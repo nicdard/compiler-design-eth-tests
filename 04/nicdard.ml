@@ -1,6 +1,6 @@
 (* Add path to test files *)
 let prefix = List.map (fun (fname, args, expected_result) -> 
-  ("./compiler-design-eth-tests/04/nicdard/" ^ fname, args, expected_result))
+  (Test_config.global_prefix ^ "./compiler-design-eth-tests/04/nicdard/" ^ fname, args, expected_result))
 
 let easy_tests = 
   [ ("easyrun0.oat", "", "10")

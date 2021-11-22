@@ -1,4 +1,4 @@
-let prefix = "./compiler-design-eth-tests/03/zikai/"
+let prefix = Test_config.global_prefix ^ "./compiler-design-eth-tests/03/zikai/"
 
 let zikai_tests = [
     prefix ^ "nested_structs.ll", 16L

@@ -1,6 +1,6 @@
 open Assert
 
-let prefix = "./compiler-design-eth-tests/03/haenniro/"
+let prefix = Test_config.global_prefix ^ "./compiler-design-eth-tests/03/haenniro/"
 
 let my_tests =
 (* Warning 1: The first test works only on Linux as it contains raw assembly with invalid labels. To make it work on mac, change the labels in stacktest_asm.s to have an underscore in front of them.*)
