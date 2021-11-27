@@ -34,6 +34,9 @@ let simple_tests = [
   ; (hw5_prefix ^ "mat_mult.oat", "", "11 7 13 14 3 22 4 1 5 0")
   ; (hw5_prefix ^ "for_cond_fun.oat", "", "10,11,12,13,14,15,16,17,18,0")
   ; (hw5_prefix ^ "null_update_global2.oat", "", "12")
+  ; (hw5_prefix ^ "equality.oat", "", "are equal0")
+  ; (hw5_prefix ^ "non_equality.oat", "", "not equal0")
+  ; (hw5_prefix ^ "count_primes_less_100.oat", "", "25")
 ]
 
 let dbernhard_tests = (Gradedtests.executed_oat_file simple_tests)

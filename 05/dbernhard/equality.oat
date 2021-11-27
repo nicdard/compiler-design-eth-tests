@@ -1,0 +1,26 @@
+struct Info {
+  int x
+}
+
+struct Point {
+  Info x;
+  int y
+}
+
+global info = new Info { x = 7 };
+global info2 = new Info { x = 7 };
+
+int program(int argc, string[] argv) {
+  var p = new Point[3] {i -> new Point { x = info; y = 0 } };
+
+  if (are_equal(p[0], p[1])) {
+    print_string("are equal");
+  } else {
+    print_string("not equal");
+  }
+  return 0;
+}
+
+bool are_equal(Point p1, Point p2) {
+  return p1.x == p2.x & p1.y == p2.y;
+}
