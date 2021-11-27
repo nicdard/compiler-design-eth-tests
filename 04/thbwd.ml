@@ -1,6 +1,6 @@
 open Assert
 
-let prefix = "./compiler-design-eth-tests/04/thbwd/"
+let prefix = Test_config.global_prefix ^ "./compiler-design-eth-tests/04/thbwd/"
 
 let simple_tests = 
   [ (prefix ^ "nested_return_array.oat", "", "0")
