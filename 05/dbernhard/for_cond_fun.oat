@@ -1,0 +1,18 @@
+global a = 0;
+
+int program(int argc, string[] args) {
+
+    for (var y = 10; con(1, y); y = y + 1;) {
+        var str = string_of_int(y);
+        print_string(str);
+        print_string(",");
+    }
+    
+    return 0;
+}
+
+bool con(int c, int b) {
+    a = a + 1;
+    b = b + 1;
+    return a < 10;
+}
