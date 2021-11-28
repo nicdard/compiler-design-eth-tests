@@ -3,6 +3,12 @@ open Assert
 let hw4_prefix = Test_config.global_prefix ^ "./compiler-design-eth-tests/04/dbernhard/"
 let hw5_prefix = Test_config.global_prefix ^ "./compiler-design-eth-tests/05/dbernhard/"
 
+let incorrect_types = [
+    hw5_prefix ^ "err_subtype.oat"
+  ; hw5_prefix ^ "err_subtype2.oat"
+  ; hw5_prefix ^ "err_subtype3.oat"
+]
+
 let simple_tests = [
   (hw4_prefix ^ "simple_while.oat", "", "10")
   ; (hw4_prefix ^ "simple_while2.oat", "", "50") (* function return value as condition *)
@@ -39,4 +45,7 @@ let simple_tests = [
   ; (hw5_prefix ^ "count_primes_less_100.oat", "", "25")
 ]
 
-let dbernhard_tests = (Gradedtests.executed_oat_file simple_tests)
+let dbernhard_tests = (
+    Gradedtests.executed_oat_file simple_tests 
+  @ Gradedtests.typecheck_file_error incorrect_types
+)
