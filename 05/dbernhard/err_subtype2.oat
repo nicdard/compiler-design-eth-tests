@@ -10,3 +10,4 @@ int program(int argc, string[] argv) {
 int fun(A a) {
   return a.x;
 }
+
