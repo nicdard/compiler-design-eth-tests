@@ -1,0 +1,14 @@
+struct A {int x; int y}
+struct B {int x; bool y}
+
+int program(int argc, string[] argv) {
+  var a = new A { x = 5; y = 6};
+  var b = new B { x = 1; y = false};
+
+  return fun(b);
+}
+
+int fun(A a) {
+  return a.x;
+}
+

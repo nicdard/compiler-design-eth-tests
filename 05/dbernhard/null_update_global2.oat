@@ -1,0 +1,15 @@
+global x = int[] null;
+
+int program (int argc, string[] argv) {
+    if? (int[] arr = x) {
+        return 1;
+    } else {
+        x = new int[] {10, 11, 12};
+    }
+
+    if? (int[] arr = x) {
+        return arr[2];
+    }
+  
+    return 1;
+}
