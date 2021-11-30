@@ -1,0 +1,21 @@
+struct Test {
+  int x;
+  int y;
+  int a;
+  int z
+}
+
+global gt = new Test {y=2; x=1; z=4; a=3};
+
+int program(int argc, string[] argv) {
+  var t = new Test {z=4; y=2; a=3; x=1};
+  print_int(gt.x);
+  print_int(gt.y);
+  print_int(gt.a);
+  print_int(gt.z);
+  print_int(t.x);
+  print_int(t.y);
+  print_int(t.a);
+  print_int(t.z);
+  return 0;
+}
