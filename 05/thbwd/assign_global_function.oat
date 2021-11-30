@@ -1,0 +1,12 @@
+int x() {
+  return 4;
+}
+
+int y() {
+  return 2;
+}
+
+int program(int argc, string[] argv) {
+  x = y;
+  return 0;
+}

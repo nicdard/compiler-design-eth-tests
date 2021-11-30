@@ -1,0 +1,5 @@
+int program(int argc, string[] argv) {
+  var j = 43;
+  var y = new int[3]{j->0};
+  return 0;
+}
