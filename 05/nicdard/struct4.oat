@@ -1,0 +1,9 @@
+struct Point {
+    int[] x;
+    int y
+}
+
+int program(int argc, string[] argv) {
+    var p = new Point { x = new int[] {1, 2}; y = 5 };
+    return p.x[1];
+}

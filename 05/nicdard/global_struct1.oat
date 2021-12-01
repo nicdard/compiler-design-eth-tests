@@ -1,0 +1,10 @@
+struct Point {
+    int x;
+    int y
+}
+
+global p = new Point { x = 4; y = 5 };
+
+int program(int argc, string[] argv) {
+    return 10;
+}
