@@ -1,0 +1,9 @@
+int program (int argc, string[] argv) {
+    var v = string null;
+    if?(string x = v) {
+        print_string("v is not null");
+    } else {
+        print_string("v is null");
+    }
+    return 0;
+}

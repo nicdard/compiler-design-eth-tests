@@ -1,0 +1,11 @@
+int g((int) -> int h) {
+    return h(10);
+}
+
+int l(int x) {
+    return x + 10;
+}
+
+int b() {
+    return g(l);
+}

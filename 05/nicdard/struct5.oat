@@ -1,0 +1,10 @@
+struct Map {
+    int[][] x;
+    int y;
+    bool is_empty
+}
+
+int program(int argc, string[] argv) {
+    var p = new Map { x = new int[][3] {i -> new int[] {1, 2, 4}}; y = 5; is_empty = false };
+    return p.x[1][2] + p.y;
+}
