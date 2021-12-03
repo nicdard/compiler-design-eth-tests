@@ -11,7 +11,7 @@ let tests = (
   typecheck_file_error [
     prefix ^ "dead_code1.oat";
     prefix ^ "dead_code2.oat";
-    prefix ^ "dead_code3.oat";
+    prefix ^ "illegal_for_stmt.oat";
     prefix ^ "assign_global_function.oat";
     prefix ^ "array_init_shadowing.oat";
   ] @

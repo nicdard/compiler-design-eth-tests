@@ -1,6 +1,9 @@
 int program(int argc, string[] argv) {
-  for (var i = 0; i < 40; return 3;) {
-    print_string("I'm a zombie");
+  if (332 < 43) {
+    return 4;
+  } else {
+    return 43;
   }
+  print_string("I'm a zombie");
   return 0;
 }
