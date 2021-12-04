@@ -1,0 +1,18 @@
+int call(int[]? x) {
+  if? (int[] y = x) {
+    if (false) {
+      return false;
+    }
+
+    return 3;
+  }
+
+  return 9;
+}
+
+int inc(int x) { return x + 1; }
+
+int program(int argc, string[] argv) {
+  var x = int[] null;
+  return 0;
+}

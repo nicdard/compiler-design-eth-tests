@@ -1,0 +1,16 @@
+
+struct A {int x}
+struct B {int x; bool y}
+
+A f(int i) {
+  if (i == 0) {
+    return new A {x = 10};
+  }
+  return new B {x = 5; y = true};
+}
+
+int program(int argc, string[] argv) {
+  var arr = new A[3]{i -> f(i)};
+
+  return arr[0].x;
+}

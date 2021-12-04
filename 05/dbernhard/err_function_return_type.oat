@@ -1,0 +1,26 @@
+struct A {int x}
+struct B {int x; bool y}
+struct C {int c}
+
+bool same_x(A? first, A? second) {
+  if? (A f = first) {
+    if? (A s = second) {
+      return f.x == s.x;
+    }
+  }
+  return false;
+}
+
+C get() {
+  return new C { c = 2 };
+}
+
+int program(int argc, string[] argv) {
+  if (same_x(get(), get())) {
+    print_string("equal");
+  } else {
+    print_string("NOT equal");
+  }
+
+  return 0;
+}

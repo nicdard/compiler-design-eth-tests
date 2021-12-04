@@ -1,0 +1,6 @@
+
+int program(int argc, string[] argv) {
+  var matrix = new int[][3]{i -> new int[3]{j -> 99}};
+
+  return matrix[0][4];
+}

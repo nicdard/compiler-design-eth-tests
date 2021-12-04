@@ -1,0 +1,20 @@
+struct Info {
+  int x
+}
+
+struct Point {
+  Info? x;
+  int y
+}
+
+global info = new Info { x = 7};
+
+
+int program(int argc, string[] argv) {
+  var p = new Point[3] {i -> new Point { x = info; y = i } };
+
+  for (var i = 0; i < 3; i = i + 1;) {
+    print_int(p[i].x);
+  }
+  
+}

@@ -1,0 +1,12 @@
+struct Info {
+  int x
+}
+
+global info = new Info { x = 7 };
+
+int program(int argc, string[] argv) {
+
+  var arr = new Info [3]{i -> info};
+
+  return arr[2].x;
+}

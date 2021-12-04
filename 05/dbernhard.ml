@@ -7,6 +7,28 @@ let incorrect_types = [
     hw5_prefix ^ "err_subtype.oat"
   ; hw5_prefix ^ "err_subtype2.oat"
   ; hw5_prefix ^ "err_subtype3.oat"
+  ; hw5_prefix ^ "err_array_subtype.oat"
+  ; hw5_prefix ^ "err_array_subtype2.oat"
+  ; hw5_prefix ^ "err_branching.oat"
+  ; hw5_prefix ^ "err_branching2.oat"
+  ; hw5_prefix ^ "err_builtin.oat"
+  ; hw5_prefix ^ "err_call_retvoid.oat"
+  ; hw5_prefix ^ "err_cast.oat"
+  ; hw5_prefix ^ "err_cast2.oat"
+  ; hw5_prefix ^ "err_function_return_type.oat"
+  ; hw5_prefix ^ "err_return.oat"
+  ; hw5_prefix ^ "err_return2.oat"
+  ; hw5_prefix ^ "err_return3.oat"
+  ; hw5_prefix ^ "err_return4.oat"
+  ; hw5_prefix ^ "err_return5.oat"
+  ; hw5_prefix ^ "err_redefined.oat"
+  ; hw5_prefix ^ "err_redefined2.oat"
+  ; hw5_prefix ^ "err_redefined3.oat"
+  ; hw5_prefix ^ "err_redefined4.oat"
+  ; hw5_prefix ^ "err_redefined5.oat"
+  ; hw5_prefix ^ "err_redefined6.oat"
+  ; hw5_prefix ^ "err_redefined7.oat"
+  ; hw5_prefix ^ "err_type_mismatch.oat"
 ]
 
 let simple_tests = [
@@ -43,6 +65,12 @@ let simple_tests = [
   ; (hw5_prefix ^ "equality.oat", "", "are equal0")
   ; (hw5_prefix ^ "non_equality.oat", "", "not equal0")
   ; (hw5_prefix ^ "count_primes_less_100.oat", "", "25")
+  ; (hw5_prefix ^ "init_array_subtype.oat", "", "0")
+  ; (hw5_prefix ^ "init_id.oat", "", "7")
+  ; (hw5_prefix ^ "init_with_function.oat", "", "5")
+  ; (hw5_prefix ^ "init_with_function2.oat", "", "10")
+  ; (hw5_prefix ^ "runtime_ex_oob.oat", "", "Out of bounds index 4 for array length 31")
+  ; (hw5_prefix ^ "sum_different_types.oat", "", "6")
 ]
 
 let dbernhard_tests = (
