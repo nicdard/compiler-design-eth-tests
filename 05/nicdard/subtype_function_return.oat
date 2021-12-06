@@ -1,0 +1,23 @@
+struct A {int x}
+struct B {int x; bool y}
+struct C {int x; bool y; int d }
+
+A getA() { 
+    return new B { x = 10; y = true };
+}
+
+B getB() {
+    return new C { x = 20; y = true; d = 4 };
+}
+
+C getC() { 
+    return new C { x = 30; y = false; d = 4 };
+}
+
+int program(int argc, string[] argv) {
+    var b = getB();
+    if (b.y) { b = getC(); }
+    var a = getA();
+    a = b;
+    return a.x;
+}

@@ -1,0 +1,18 @@
+struct A {int x}
+struct B {int x; bool y}
+struct C {int x; int y}
+
+B? get() {
+    return new B { x = 20; y = false };
+}
+
+int program(int argc, string[] argv) {
+    var a = new A { x = 10 };
+    if?(A b1 = get()) {
+        a = b1;
+    } else {
+        var c = new C { x = 30; y = 0 };
+        a = c;
+    }
+    return a.x;
+}

@@ -78,7 +78,17 @@ let frontend_tests = prefix3
   ; "global_struct2.oat", "", "5"
   ]
 
+let subtype_e2e_tests = prefix3
+  [ "subtype_ass.oat", "", "22"
+  ; "subtype_checked_cast.oat", "", "20"
+  ; "subtype_function_params.oat", "", "30"
+  ; "subtype_function_return.oat", "", "30"
+  ; "subtype_global_struct.oat", "", "30"
+  ; "subtype_struct_fields.oat", "", "20"
+  ]
+
 let nicdard_tests = subtype_unit_tests
   @ typecheck_ty_unit_tests
   @ context_builder_test Typechecker.create_function_ctxt typecheck_program_correct_ctxt_tests
   @ Gradedtests.executed_oat_file frontend_tests
+  @ Gradedtests.executed_oat_file subtype_e2e_tests
