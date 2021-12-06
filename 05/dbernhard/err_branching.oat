@@ -1,0 +1,14 @@
+int sum(int[]? arr) {
+    if?(int[] a = arr) {
+      
+      return 1;
+    } else {
+
+      return 2;
+    }
+    return 9;
+}
+
+int program (int argc, string[] argv) {
+    return sum(new int[]{1});
+}

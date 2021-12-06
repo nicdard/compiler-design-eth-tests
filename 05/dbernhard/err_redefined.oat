@@ -1,0 +1,6 @@
+int x() { return 2; }
+int x() { return 1; }
+
+int program (int argc, string[] argv) {
+    return x();
+}

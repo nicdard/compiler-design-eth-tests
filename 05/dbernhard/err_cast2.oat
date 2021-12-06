@@ -1,0 +1,21 @@
+int sum(int[]? arr) {
+    var z = 0;
+    if?(int[] a = arr) {
+      for(var i = 0; i<length(a); i = i + 1;) {
+        z = z + a[i];
+      }
+    }
+    return z;
+}
+
+int program (int argc, string[] argv) {
+    var x = 0;
+    var input = int[] null;
+    if?(bool[] a = input) {
+      x = x + 4;
+    }
+    
+    x = x + sum(new int[]{1,2,3});
+    x = x + sum(int[] null);
+    return x;
+}

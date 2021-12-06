@@ -1,0 +1,19 @@
+int call((int) -> bool f, int arg) {
+  if (f(arg)) {
+    return 1;
+  }
+
+  return 9;
+}
+
+int inc(int x) { return x + 1; }
+
+int program(int argc, string[] argv) {
+  if (true) {
+    return 1;
+  } else {
+    return call(inc, 3);
+  }
+
+  return 1;
+}

@@ -1,0 +1,8 @@
+int program (int argc, string[] argv) {
+  var x = 1;
+  if (x == 3) {
+    var x = 4;
+  }
+
+  return 3;
+}
