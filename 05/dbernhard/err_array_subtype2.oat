@@ -2,10 +2,6 @@ struct A {int x}
 struct B {int x; bool y}
 struct C {int x; int y}
 
-bool equal(A? first, A? second) {
-  return first == second;
-}
-
 A? get(int x) {
   if (x == 0) {
     return new A { x = 1 };
