@@ -1,0 +1,11 @@
+struct A { int x }
+struct B { int x ; int y }
+struct C { int x ; int y ; int z }
+
+int program(int argc, string[] argv) {
+  var y = new A[]{new A{x=1}, new B{x=2; y=54}, new C{x=3; y=511; z=432}};
+  for (var i = 0; i < 3; i = i + 1;) {
+    print_int(y[i].x);
+  }
+  return 0;
+}

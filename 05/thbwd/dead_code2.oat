@@ -1,0 +1,9 @@
+int program(int argc, string[] argv) {
+  if (332 < 43) {
+    return 4;
+  } else {
+    return 43;
+  }
+  print_string("I'm a zombie");
+  return 0;
+}
