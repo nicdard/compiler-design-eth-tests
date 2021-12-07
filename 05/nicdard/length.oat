@@ -1,0 +1,4 @@
+int program (int argc, string[] argv) {
+    var arr = new int[3] { i -> i };
+    return length(arr);
+}

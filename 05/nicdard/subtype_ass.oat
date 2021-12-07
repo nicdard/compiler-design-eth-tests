@@ -1,0 +1,12 @@
+struct A {int x}
+struct B {int x; bool y}
+struct C {int x; int y}
+
+int program(int argc, string[] argv) {
+  var b = new B { x = 2; y = false };
+  var a = new A { x = 10 };
+  a = b;
+  var c = new C { x = 20; y = 0 };
+  a = c;
+  return a.x + b.x;
+}

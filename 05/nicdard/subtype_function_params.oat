@@ -1,0 +1,18 @@
+struct A {int x}
+struct B {int x; bool y}
+struct C {int x; bool y; int d }
+
+A idA(A a) { 
+    return a;
+}
+
+int program(int argc, string[] argv) {
+    var sum = 0;
+    var c = new C { x = 10; y = false; d = 0 };
+    var a = idA(c);
+    sum = sum + a.x;
+    var b = new B { x = 20; y = true };
+    a = idA(b);
+    sum = sum + a.x;
+    return sum;
+}

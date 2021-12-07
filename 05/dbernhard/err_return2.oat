@@ -1,0 +1,15 @@
+void call((int) -> int f, int arg) {
+  return;
+}
+
+int inc(int x) { return x + 1; }
+
+int program(int argc, string[] argv) {
+  if (true) {
+    return 1;
+  } else {
+    return false;
+  }
+
+  return 1;
+}

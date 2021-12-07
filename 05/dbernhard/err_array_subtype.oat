@@ -1,0 +1,11 @@
+struct A {int x}
+struct B {int x; bool y}
+struct C {int a; int b}
+
+int program(int argc, string[] argv) {
+  var c1 = new C { a = 2; b = 1 };
+  
+  var array = new A[10] {i -> c1};
+
+  return 0;
+}

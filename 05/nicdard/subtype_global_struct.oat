@@ -1,0 +1,15 @@
+struct A {int x}
+struct B {int x; bool y}
+struct C {int x; bool y; int d }
+
+global a = new A { x = 10 };
+
+global b = new B { x = 20; y = true };
+
+global c = new C { x = 30; y = false; d = 4 };
+
+int program(int argc, string[] argv) {
+    b = c;
+    a = b;
+    return a.x;
+}
