@@ -1,5 +1,0 @@
-int program(int argc, string[] argv) {
-  return 0;
-  print_string("I'm a zombie");
-  return 0;
-}
